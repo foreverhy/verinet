@@ -10,13 +10,13 @@
 
 namespace veri {
 
-class EPoller: private Poller {
+class EPoller: public Poller {
   public:
     typedef std::vector<struct epoll_event> EPollEventsList;
-    EPoller(EventLoop *loop);
+    EPoller(EventLoop &loop);
     ~EPoller() {}
 
-    virtual int poll(int timeout_ms, ChannelList *active_channels);
+    virtual int poll(int timeout_ms, ChannelList &active_channels);
 
   private:
 

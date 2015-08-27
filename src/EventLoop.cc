@@ -7,8 +7,8 @@
 
 #include <cassert>
 
-#include <unistd.h>
 #include <poll.h>
+#include <EPoller.h>
 
 namespace veri {
 
@@ -17,7 +17,7 @@ thread_local EventLoop* loop_in_this_thread = nullptr;
 }
 
 
-veri::EventLoop::EventLoop(): looping_(false), tid_(std::this_thread::get_id()) {
+veri::EventLoop::EventLoop(): looping_(false), tid_(std::this_thread::get_id()), poller_(new EPoller(*this)) {
     if (loop_in_this_thread) {
         LOG_FATAL("Already has a loop in this thread");
     } else {

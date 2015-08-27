@@ -19,13 +19,13 @@ class Channel: nocopyable {
   public:
     typedef std::function<void()> CallbackFn;
 
-    Channel(EventLoop *loop, int fd);
+    Channel(EventLoop &loop, int fd);
     ~Channel() {}
 
     int fd() const { return fd_; }
     int events() const { return events_; }
     int revents() const { return revents_; }
-    EventLoop* loop() const { return loop_; }
+    EventLoop& loop() const { return loop_; }
 
     void set_revents(uint32_t revents) { revents_ = revents; }
 
@@ -46,7 +46,7 @@ class Channel: nocopyable {
 
   private:
 
-    EventLoop *loop_;
+    EventLoop &loop_;
     const int fd_;
 
     uint32_t events_;

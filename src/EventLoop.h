@@ -9,8 +9,10 @@
 
 #include <atomic>
 #include <thread>
+#include <memory>
 
 namespace veri {
+class Poller;
 
 class EventLoop: nocopyable {
   public:
@@ -21,6 +23,9 @@ class EventLoop: nocopyable {
   private:
     std::atomic_bool looping_;
     std::thread::id tid_;
+
+    std::unique_ptr<Poller> poller_;
+
 
     bool in_loop_thread();
 };
