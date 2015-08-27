@@ -6,7 +6,15 @@
 #define VERINET_POLLER_H
 
 
+#include <nocopyable.h>
+
+#include <vector>
+#include <map>
+
 namespace veri {
+
+class EventLoop;
+class Channel;
 
 
 enum POLL_EVENTS {
@@ -26,7 +34,23 @@ enum POLL_EVENTS {
     POLLET = 1u << 31
 };
 
-class Poller {
+class Poller: nocopyable {
+  public:
+    typedef std::vector<Channel*> ChannelList;
+    typedef std::map<int, Channel*> ChannelMap;
+    Poller(EventLoop *loop): loop_(loop) {}
+    virtual ~Poller() = 0;
+
+    virtual int poll(int timeout_ms, ChannelList *active_channels);
+
+    virtual void update_channel(Channel *channel);
+
+  protected:
+
+    static const int SIZE = 1024;
+    EventLoop *loop_;
+
+    ChannelMap channels_;
 
 };
 

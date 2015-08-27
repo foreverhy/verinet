@@ -2,7 +2,7 @@
 // Author: Yao Han <verihy@gmail.com>
 // 
 
-#include "Channel.h"
+#include <Channel.h>
 
 
 veri::Channel::Channel(veri::EventLoop *loop, int fd):loop_(loop), fd_(fd) {
