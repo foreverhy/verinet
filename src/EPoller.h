@@ -7,6 +7,7 @@
 
 #include <Poller.h>
 #include <sys/epoll.h>
+#include <unistd.h>
 
 namespace veri {
 
@@ -14,7 +15,7 @@ class EPoller: public Poller {
   public:
     typedef std::vector<struct epoll_event> EPollEventsList;
     EPoller(EventLoop &loop);
-    ~EPoller() {}
+    ~EPoller() { ::close(epoll_fd_); }
 
     virtual int poll(int timeout_ms, ChannelList &active_channels) override;
 

@@ -4,6 +4,7 @@
 
 #include <EPoller.h>
 #include <Channel.h>
+#include <Log.h>
 
 #include <sys/epoll.h>
 
@@ -21,6 +22,7 @@ int veri::EPoller::poll(int timeout_ms, veri::Poller::ChannelList &active_channe
 
     for (int i = 0; i < nfds; ++i) {
         int fd = epoll_events_[i].data.fd;
+        LOG_INFO("FILL Channel %d - %u\n", fd, epoll_events_[i].events);
         auto iter = channels_.find(fd);
         assert(iter != channels_.end());
         Channel *channel = iter->second;
@@ -32,6 +34,7 @@ int veri::EPoller::poll(int timeout_ms, veri::Poller::ChannelList &active_channe
 }
 
 void veri::EPoller::update_channel(veri::Channel &channel) {
+    LOG_INFO("UPDATE Channel %d - %u\n", channel.fd(), channel.events());
     auto iter = channels_.find(channel.fd());
     int op = 0;
     if (iter == channels_.end()) {
@@ -53,11 +56,8 @@ void veri::EPoller::remove_channel(veri::Channel &channel) {
 }
 
 void veri::EPoller::remove_channel(int fd) {
-    auto iter = channels_.find(fd);
-    assert(iter != channels_.end());
-    Channel *channel = iter->second;
+    channels_.erase(fd);
     struct epoll_event ev;
-    ev.data.fd = channel->fd();
-    ev.events = 0;
-    ::epoll_ctl(epoll_fd_, EPOLL_CTL_DEL, channel->fd(), &ev);
+    ::epoll_ctl(epoll_fd_, EPOLL_CTL_DEL, fd, &ev);
+    LOG_INFO("REMOVE Channel %d\n", fd);
 }

@@ -6,7 +6,7 @@
 #include <Log.h>
 
 
-veri::Channel::Channel(veri::EventLoop &loop, int fd):loop_(loop), fd_(fd) {
+veri::Channel::Channel(veri::EventLoop &loop, int fd):loop_(loop), fd_(fd), events_(0), revents_(0) {
 
 }
 
@@ -49,5 +49,7 @@ void veri::Channel::handle() {
             write_cb_();
         }
     }
+
+    revents_ = 0;
 
 }

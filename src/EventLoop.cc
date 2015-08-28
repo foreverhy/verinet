@@ -35,6 +35,7 @@ veri::EventLoop::EventLoop(): looping_(false), tid_(std::this_thread::get_id()),
 
 veri::EventLoop::~EventLoop() {
     assert(loop_in_this_thread == this);
+    looping_ = false;
     loop_in_this_thread = nullptr;
     delete wakeup_channel_;
     ::close(wakeup_fd_);

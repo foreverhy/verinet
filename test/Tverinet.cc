@@ -26,18 +26,22 @@ TEST(EventLoop, loop) {
 //    loop.loop();
 }
 
-void foo() {
+void foo(veri::EventLoop &loop, int fd) {
     std::cout << "== FOO ==" << std::endl;
     std::string s;
-    std::cin >> s;
-    std::cout << s << std::endl;
+    if (std::cin >> s) {
+        std::cout << s << std::endl;
+    } else {
+        loop.remove_channel(fd);
+        ::close(fd);
+    }
 }
 
 TEST(EPoll, basic) {
     veri::EventLoop loop;
     veri::Channel channel(loop, fileno(stdin));
     channel.set_reading(true);
-    channel.set_readcb(foo);
+    channel.set_readcb(std::bind(foo,std::ref(loop), fileno(stdin)));
     loop.update_channel(channel);
     loop.loop();
 }
