@@ -17,7 +17,8 @@ set(GTEST_ROOT ${PROJECT_SOURCE_DIR}/gtest_1.7.0)
 
     enable_testing()
     set(PROJECT_TEST_NAME ${PROJECT_NAME_STR}_test)
-    include_directories(${GTEST_ROOT}/include ${COMMON_INCLUDE})
+    #include_directories(${GTEST_ROOT}/include ${COMMON_INCLUDE})
+    include_directories(${GTEST_ROOT}/include ${PROJECT_SOURCE_DIR}/src)
 
     file(GLOB TEST_SRC ${PROJECT_SOURCE_DIR}/test/*.cc)
     add_executable(${PROJECT_TEST_NAME} ${TEST_SRC})
@@ -30,5 +31,5 @@ set(GTEST_ROOT ${PROJECT_SOURCE_DIR}/gtest_1.7.0)
         ${CMAKE_THREAD_LIBS_INIT}
         )
 
-    add_test(test1, ${PROJECT_TEST_NAME})
+#    add_test(test1, ${PROJECT_TEST_NAME})
 #endif()

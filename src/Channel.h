@@ -23,8 +23,8 @@ class Channel: nocopyable {
     ~Channel() {}
 
     int fd() const { return fd_; }
-    int events() const { return events_; }
-    int revents() const { return revents_; }
+    uint32_t events() const { return events_; }
+    uint32_t revents() const { return revents_; }
     EventLoop& loop() const { return loop_; }
 
     void set_revents(uint32_t revents) { revents_ = revents; }

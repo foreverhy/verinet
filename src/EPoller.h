@@ -16,7 +16,13 @@ class EPoller: public Poller {
     EPoller(EventLoop &loop);
     ~EPoller() {}
 
-    virtual int poll(int timeout_ms, ChannelList &active_channels);
+    virtual int poll(int timeout_ms, ChannelList &active_channels) override;
+
+    virtual void update_channel(Channel &channel) override;
+
+    virtual void remove_channel(int fd) override;
+
+    virtual void remove_channel(Channel &channel) override;
 
   private:
 

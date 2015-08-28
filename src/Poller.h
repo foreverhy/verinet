@@ -43,7 +43,11 @@ class Poller: nocopyable {
 
     virtual int poll(int timeout_ms, ChannelList &active_channels) = 0;
 
-//    virtual void update_channel(Channel &channel) = 0;
+    virtual void update_channel(Channel &channel) = 0;
+
+    virtual void remove_channel(Channel &channel) = 0;
+
+    virtual void remove_channel(int fd) = 0;
 
   protected:
 
