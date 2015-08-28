@@ -24,6 +24,7 @@ int veri::EPoller::poll(int timeout_ms, veri::Poller::ChannelList &active_channe
         auto iter = channels_.find(fd);
         assert(iter != channels_.end());
         Channel *channel = iter->second;
+        channel->set_revents(epoll_events_[i].events);
         active_channels.push_back(channel);
     }
 

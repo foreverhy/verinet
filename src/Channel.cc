@@ -3,6 +3,7 @@
 // 
 
 #include <Channel.h>
+#include <Log.h>
 
 
 veri::Channel::Channel(veri::EventLoop &loop, int fd):loop_(loop), fd_(fd) {
@@ -29,6 +30,7 @@ void veri::Channel::set_writeing(bool on) {
 
 
 void veri::Channel::handle() {
+    LOG_INFO("HANDLE for %d, revents is %u\n", fd_, revents_);
 
     if (revents_ & POLL_EVENTS:: ERR) {
         if (close_cb_) {
