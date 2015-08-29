@@ -4,7 +4,12 @@
 
 #include <EventLoop.h>
 #include <Channel.h>
+#include <InetAddress.h>
+#include <Acceptor.h>
 #include <gtest/gtest.h>
+
+#include <sys/types.h>
+#include <sys/socket.h>
 
 #include <thread>
 #include <string>
@@ -43,6 +48,27 @@ TEST(EPoll, basic) {
     channel.set_reading(true);
     channel.set_readcb(std::bind(foo,std::ref(loop), fileno(stdin)));
     loop.update_channel(channel);
-    loop.loop();
+//    loop.loop();
 }
 
+#include <cstdio>
+
+void bar(int listenfd) {
+    struct sockaddr_in addr;
+    socklen_t addr_len = sizeof(addr);
+    ::printf("=== BAR ===\n");
+    int fd = ::accept(listenfd, (struct sockaddr*)&addr, &addr_len);
+//    ::getpeername(fd, (struct sockaddr*)&addr, &addr_len);
+    ::printf("New Conn from %s:%u\n", ::inet_ntoa(addr.sin_addr), ::ntohs(addr.sin_port));
+    ::close(fd);
+}
+
+TEST(Acceptor, basic) {
+    veri::EventLoop loop;
+    veri::Acceptor acc(loop);
+    veri::InetAddress addr("127.0.0.1", 8888);
+    acc.bind(addr);
+    acc.set_new_conn_cb(bar);
+    acc.listen();
+    loop.loop();
+}
