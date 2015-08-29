@@ -70,5 +70,22 @@ TEST(Acceptor, basic) {
     acc.bind(addr);
     acc.set_new_conn_cb(bar);
     acc.listen();
-    loop.loop();
+//    loop.loop();
+}
+
+#include <Buffer.h>
+
+TEST(Buffer, basic) {
+    veri::Buffer buffer;
+    buffer.append("abcdefg");
+    ASSERT_EQ(std::string("abcdefg"), buffer.retrive_all());
+    ASSERT_EQ(std::string(), buffer.retrive_all());
+    std::string tmp;
+    buffer.append("abcdefg");
+    for (int i = 0; i < 2048; ++i) {
+        tmp += "1";
+    }
+    buffer.append(tmp);
+    ASSERT_EQ(std::string("abcdefg") + tmp, buffer.retrive_all());
+    ASSERT_EQ(std::string(), buffer.retrive_all());
 }
