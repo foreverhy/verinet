@@ -2,7 +2,7 @@
 // Author: Yao Han <verihy@gmail.com>
 // 
 
-#include "InetAddress.h"
+#include <InetAddress.h>
 
 veri::InetAddress::InetAddress(const std::string &addr, const uint16_t port) {
     std::memset(&inet_addr_, 0, sizeof inet_addr_);

@@ -28,6 +28,8 @@ class InetAddress {
         return std::string(ret);
     }
 
+    const struct sockaddr_in& sockaddr_in() const { return inet_addr_; }
+
   private:
     struct sockaddr_in inet_addr_;
 
